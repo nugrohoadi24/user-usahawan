@@ -4,7 +4,7 @@
         <div class="col col-lg-4 text-center">
             <img src="images/homepage.png" alt="" width="294">
             <h3 class="mt-4">
-                Sukses Terbayar!
+                Data Berhasil Dikirim!
             </h3>
             <p class="mt-2">
                 Silakan tunggu update terbaru dari kami via email yang sudah Anda daftarkan sebelumnya.

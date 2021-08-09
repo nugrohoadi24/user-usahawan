@@ -210,24 +210,6 @@ export default {
             }
         }
     },
-    // computed : {
-    //     formattedValue: {
-    //         get: function() {
-    //             return this.value;
-    //             },
-    //             set: function(newValue) {
-    //             if (newValue.length > 2) {
-    //                 newValue = newValue.replace(".", "");
-    //                 this.value =
-    //                 newValue.substr(0, newValue.length - 2) +
-    //                 "." +
-    //                 newValue.substr(newValue.length - 2);
-    //             } else {
-    //                 this.value = newValue;
-    //             }
-    //         }
-    //     }
-    // }
 }
 </script>
 

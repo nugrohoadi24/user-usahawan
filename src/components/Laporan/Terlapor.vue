@@ -191,7 +191,8 @@ export default {
             formData.append('ktp_pelapor', this.ktp_pelapor)
             formData.append('primary_document', this.primary_document)
             formData.append('secondary_document', this.secondary_document)
-
+            
+            var that = this;
             axios({
             method: "post",
             url: "http://localhost/api/laporan",
@@ -200,12 +201,16 @@ export default {
             })
             .then(function (response) {
                 alert(response.data.message)
+                that.$router.push('/sukses');
             })
-            .catch(function (e) {
+            .catch(function () {
                 alert('Data Gagal Dikirim, silahkan periksa inputan anda')
-                console.log(e)
             });
-        }
+            this.removeDataLaporan()
+        },
+        removeDataLaporan() {
+            localStorage.removeItem('dataLaporan1')
+        },
     },
     async mounted() {
         var dataStorage = await localStorage.getItem('dataLaporan1')
@@ -214,7 +219,6 @@ export default {
         if (localStorage.getItem('dataLaporan2')) {
             try {
                 this.dataLaporan2 = JSON.parse(localStorage.getItem('dataLaporan2'));
-                console.log(this.dataLaporan2, 'yoooo')
             } catch(e) {
                 localStorage.removeItem('dataLaporan2')
             }
