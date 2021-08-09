@@ -15,7 +15,7 @@
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <h3 class="laporan-heading">Form Permohonan Termohon</h3>
                         <form class="was-validated needs-validation row laporan-form" v-on:submit.prevent="saveDataTermohon">
-                            <div class="col-md-10">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <input type="text" name="nama_termohon" id="nama_termohon" v-model="nama_termohon" class="form-control m-2" placeholder="Nama Termohon *" required/>
                                 </div>
@@ -30,7 +30,21 @@
                                     <input type="number" name="no_telp_termohon" id="no_telp_termohon" v-model="no_telp_termohon" minlength="10" maxlength="13" class="form-control m-2" placeholder="Nomor Telepon Termohon *" required/>
                                 </div>
                                 <div class="form-group">
-                                    <textarea class="form-control is-invalid m-2" name="alamat_termohon" id="alamat_termohon" v-model="alamat_termohon" placeholder="Alamat Pemohon *" required></textarea>
+                                    <input type="text" name="provinsi_termohon" id="provinsi_termohon" v-model="provinsi_termohon" class="form-control m-2" placeholder="Provinsi Termohon *" required/>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="text" name="kota_termohon" id="kota_termohon" v-model="kota_termohon" class="form-control m-2" placeholder="Kabupaten/Kota Termohon *" required/>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="kecamatan_termohon" id="kecamatan_termohon" v-model="kecamatan_termohon" class="form-control m-2" placeholder="Kecamatan Termohon *" />
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="kelurahan_termohon" id="kelurahan_termohon" v-model="kelurahan_termohon" class="form-control m-2" placeholder="Kelurahan Termohon *" />
+                                </div>
+                                <div class="form-group">
+                                    <textarea class="form-control is-invalid m-2" name="alamat_termohon" id="alamat_termohon" v-model="alamat_termohon" placeholder="Alamat Lengkap Pemohon *" required></textarea>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -45,8 +59,7 @@
                                     <input type="file" class="form-control m-2" @change="handleFotoKTP" required>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                
+                            <div class="col-md-6">
                             </div>
                             <div class="col-md-6 ">
                                 <input type="submit" class="btnlaporan text-center font-white" value="Kirim Permohonan"/>
@@ -72,6 +85,10 @@ export default {
             nama_termohon: '',
             jenis_kelamin_termohon: '',
             no_telp_termohon: '',
+            provinsi_termohon: '',
+            kota_termohon: '',
+            kecamatan_termohon: '',
+            kelurahan_termohon: '',
             alamat_termohon: '',
             foto_pemohon: null,
             ktp_pemohon: null,
@@ -90,6 +107,10 @@ export default {
                 "jenis_kelamin_termohon": this.jenis_kelamin_termohon,
                 "no_telp_termohon": this.no_telp_termohon,
                 "alamat_termohon": this.alamat_termohon,
+                "provinsi_termohon": this.provinsi_termohon,
+                "kota_termohon": this.kota_termohon,
+                "kecamatan_termohon": this.kecamatan_termohon,
+                "kelurahan_termohon": this.kelurahan_termohon,
                 "kategori": "Laporan",
                 "status": "PROSES",
             }
@@ -113,6 +134,10 @@ export default {
             formData.append('nama_termohon', this.nama_termohon)
             formData.append('jenis_kelamin_termohon', this.jenis_kelamin_termohon)
             formData.append('no_telp_termohon', this.no_telp_termohon)
+            formData.append('provinsi_termohon', this.provinsi_termohon)
+            formData.append('kota_termohon', this.kota_termohon)
+            formData.append('kecamatan_termohon', this.kecamatan_termohon)
+            formData.append('kelurahan_termohon', this.kelurahan_termohon)
             formData.append('alamat_termohon', this.alamat_termohon)
             formData.append('kategori', "Laporan")
             formData.append('status', "PROSES")

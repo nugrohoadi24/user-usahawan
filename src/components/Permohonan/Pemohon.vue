@@ -6,7 +6,7 @@
                 <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
                 <h3>Data Pemohon</h3>
                 <p>Silahkan isi data Anda (Pemohon), kami akan bantu prosesnya.</p>
-                <a href="/">
+                <a href="/" @click="removeDataPemohon">
                     <input type="submit" name="" value="Kembali"/><br/>
                 </a>
             </div>
@@ -102,13 +102,25 @@ export default {
             const parsed = JSON.stringify(pemohonStored);
             localStorage.setItem('dataPermohonan1', parsed);
             this.$router.push('/termohon');
+        },
+        removeDataPemohon() {
+            localStorage.removeItem('dataPermohonan1')
         }
     },
     mounted() {
         if (localStorage.getItem('dataPermohonan1')) {
             try {
                 this.dataPermohonan1 = JSON.parse(localStorage.getItem('dataPermohonan1'));
-                console.log(this.dataPermohonan1)
+
+                this.nama_pemohon = this.dataPermohonan1.nama_pemohon;
+                this.jenis_kelamin_pemohon = this.dataPermohonan1.jenis_kelamin_pemohon;
+                this.tanggal_lahir_pemohon = this.dataPermohonan1.tanggal_lahir_pemohon;
+                this.alamat_pemohon = this.dataPermohonan1.alamat_pemohon;
+                this.no_telp_pemohon = this.dataPermohonan1.no_telp_pemohon;
+                this.email_pemohon = this.dataPermohonan1.email_pemohon;
+                this.nama_pembina_pemohon = this.dataPermohonan1.nama_pembina_pemohon;
+                this.nama_dpd_pemohon = this.dataPermohonan1.nama_dpd_pemohon;
+                this.kepentingan = this.dataPermohonan1.kepentingan;
             } catch(e) {
                 localStorage.removeItem('dataPermohonan1')
             }

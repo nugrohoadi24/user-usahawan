@@ -5,6 +5,7 @@ import Pelapor from "../components/Laporan/Pelapor.vue"
 import Terlapor from "../components/Laporan/Terlapor.vue"
 import Pemohon from "../components/Permohonan/Pemohon.vue"
 import Termohon from "../components/Permohonan/Termohon.vue"
+import Sukses from "../components/Sukses.vue"
 
 Vue.use(VueRouter)
 const routes = [{
@@ -31,6 +32,11 @@ const routes = [{
         path: "/termohon",
         name: "Termohon",
         component: Termohon
+    },
+    {
+        path: "/sukses",
+        name: "Sukses",
+        component: Sukses
     },
 ]
 

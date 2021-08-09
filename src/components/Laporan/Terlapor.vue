@@ -83,7 +83,7 @@
                                 <label class="form-group mt-2 left-2 fix-btm-2">Bukti Pelaporan Pendukung</label>
                                 <p class="left-2 note">*Contoh : Foto Pelaku, Sosial Media, dsb</p>
                                 <div class="custom-file">
-                                    <input type="file" name="secondary_document" id="secondary_document" @change="handleSecondaryDocument" class="form-control m-2" >
+                                    <input type="file" name="secondary_document" id="secondary_document" @change="handleSecondaryDocument" class="form-control m-2" required>
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -163,6 +163,7 @@ export default {
         },
         submitData() {
             let formData = new FormData()
+
             formData.append('nama_pelapor', this.dataLaporan.nama_pelapor)
             formData.append('jenis_kelamin_pelapor', this.dataLaporan.jenis_kelamin_pelapor)
             formData.append('tanggal_lahir_pelapor', this.dataLaporan.tanggal_lahir_pelapor)
