@@ -7,7 +7,7 @@
                 Data Berhasil Dikirim!
             </h3>
             <p class="mt-2">
-                Silakan tunggu update terbaru dari kami via email yang sudah Anda daftarkan sebelumnya.
+                Silakan tunggu update terbaru dari kami via email yang sudah Anda daftarkan sebelumnya, jangan lupa untuk cek spam juga.
             </p>
             <a @click="clearStorage()" href="#/" class="primary-btn pd-cart mt-3">Back to Home</a>
         </div>

@@ -94,10 +94,7 @@ a {
     border-radius: 20px !important;
     transform: scale(0.8);
 }
-.card-service {
-    height: 200px;
-    border-radius: 20px;
-}
+
 .card-title {
     font-weight: 700;
     margin-bottom: 5px !important;
@@ -243,6 +240,14 @@ a {
 }
 
 /* Responsive Media */
+
+@media (min-width: 992px ) {
+    .card-service {
+        height: 200px;
+        border-radius: 20px;
+    }
+}
+
 @media (max-width: 991.98px) {
     .home-bg {
         background-image: url("images/homepage.png");
@@ -269,6 +274,10 @@ a {
     }
     .laporan-left input {
         margin-top: 2px;
+    }
+    .card-service {
+        height: 120px;
+        border-radius: 20px;
     }
     
 }

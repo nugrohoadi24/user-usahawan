@@ -14,7 +14,7 @@
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <h3 class="laporan-heading">Form Laporan Terlapor</h3>
-                        <form class="was-validated needs-validation row laporan-form" v-on:submit.prevent="saveDataTerlapor">
+                        <form class="was-validated needs-validation row laporan-form" v-on:submit.prevent="submitData">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <input type="text" name="nama_terlapor" id="nama_terlapor" v-model="nama_terlapor" class="form-control m-2" placeholder="Nama Terlapor *" required/>
@@ -29,11 +29,6 @@
                                 <div class="form-group">
                                     <input type="number" name="no_telp_terlapor" id="no_telp_terlapor" v-model="no_telp_terlapor" minlength="10" maxlength="13" class="form-control m-2" placeholder="Nomor Telepon Terlapor *" required/>
                                 </div>
-                                <div class="form-group">
-                                    <textarea  name="alamat_terlapor" id="alamat_terlapor" v-model="alamat_terlapor" class="form-control is-invalid m-2" placeholder="Alamat Terlapor *" required></textarea>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
                                 <div class="form-group">
                                     <input type="email" name="email_terlapor" id="email_terlapor" v-model="email_terlapor" class="form-control m-2" placeholder="Email Terlapor (Jika Ada)" />
                                 </div>
@@ -55,7 +50,68 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-12 mt-2 left-2">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <select @change="dataKabkota" name="provinsi_terlapor" id="provinsi_terlapor" v-model="provinsi_terlapor" class="form-control m-2" required>
+                                        <option 
+                                            class="hidden" 
+                                            value="" 
+                                            selected disabled>Provinsi Terlapor *</option>
+                                        <option
+                                            v-for="getProvinsi in provinsi"
+                                            v-bind:key="getProvinsi.id"
+                                            v-bind:value="getProvinsi.id">
+                                            {{ getProvinsi.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select @change="dataKecamatan" name="kota_terlapor" id="kota_terlapor" v-model="kota_terlapor" class="form-control m-2" required>
+                                        <option 
+                                            class="hidden" 
+                                            value="" 
+                                            selected disabled>Kabupaten/Kota Terlapor *</option>
+                                        <option
+                                            v-for="getKabkota in kabkota"
+                                            v-bind:key="getKabkota.id"
+                                            v-bind:value="getKabkota.id">
+                                            {{ getKabkota.name }}
+                                        </option>
+                                    </select>  
+                                </div>
+                                <div class="form-group">
+                                    <select @change="dataKelurahan" name="kecamatan_terlapor" id="kecamatan_terlapor" v-model="kecamatan_terlapor" class="form-control m-2">
+                                        <option 
+                                            class="hidden" 
+                                            value="" 
+                                            selected disabled>Kecamatan Terlapor *</option>
+                                        <option
+                                            v-for="getKecamatan in kecamatan"
+                                            v-bind:key="getKecamatan.id"
+                                            v-bind:value="getKecamatan.id">
+                                            {{ getKecamatan.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select name="kelurahan_terlapor" id="kelurahan_terlapor" v-model="kelurahan_terlapor" class="form-control m-2">
+                                        <option 
+                                            class="hidden" 
+                                            value="" 
+                                            selected disabled>Kelurahan Terlapor *</option>
+                                        <option
+                                            v-for="getKelurahan in kelurahan"
+                                            v-bind:key="getKelurahan.id"
+                                            v-bind:value="getKelurahan.id">
+                                            {{ getKelurahan.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <textarea  name="alamat_terlapor" id="alamat_terlapor" v-model="alamat_terlapor" class="form-control is-invalid m-2" placeholder="Alamat Lengkap Terlapor *" required></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mt-2">
                                 <div class="form-group">
                                     <textarea name="uraian_kasus" id="uraian_kasus" v-model="uraian_kasus" class="form-control m-2 ckeditor " placeholder="Uraian Kasus *" required></textarea>
                                 </div>
@@ -116,6 +172,10 @@ export default {
             nama_terlapor: '',
             jenis_kelamin_terlapor: '',
             no_telp_terlapor: '',
+            provinsi_terlapor: '',
+            kota_terlapor: '',
+            kecamatan_terlapor: '',
+            kelurahan_terlapor: '',
             alamat_terlapor: '',
             email_terlapor: '',
             nama_dpd_terlapor: '',
@@ -127,6 +187,10 @@ export default {
             primary_document: null,
             secondary_document: null,
 
+            provinsi: [],
+            kabkota: [],
+            kecamatan: [],
+            kelurahan: [],
         };
     },
     methods: {
@@ -142,31 +206,16 @@ export default {
         handleSecondaryDocument(e) {
             this.secondary_document = e.target.files[0]
         },
-        saveDataTerlapor() {
-            var terlaporStored = {
-                "nama_terlapor": this.nama_terlapor,
-                "jenis_kelamin_terlapor": this.jenis_kelamin_terlapor,
-                "no_telp_terlapor": this.no_telp_terlapor,
-                "alamat_terlapor": this.alamat_terlapor,
-                "email_terlapor": this.email_terlapor,
-                "nama_dpd_terlapor": this.nama_dpd_terlapor,
-                "kasus": this.kasus,
-                "penyelesaian": this.penyelesaian,
-                "uraian_kasus": this.uraian_kasus,
-                "kategori": "Laporan",
-                "status": "PROSES",
-            }
-
-            const parsed = JSON.stringify(terlaporStored);
-            localStorage.setItem('dataLaporan2', parsed);
-            this.submitData()
-        },
         submitData() {
             let formData = new FormData()
 
             formData.append('nama_pelapor', this.dataLaporan.nama_pelapor)
             formData.append('jenis_kelamin_pelapor', this.dataLaporan.jenis_kelamin_pelapor)
             formData.append('tanggal_lahir_pelapor', this.dataLaporan.tanggal_lahir_pelapor)
+            formData.append('provinsi_pelapor', this.dataLaporan.provinsi_pelapor)
+            formData.append('kota_pelapor', this.dataLaporan.kota_pelapor)
+            formData.append('kecamatan_pelapor', this.dataLaporan.kecamatan_pelapor)
+            formData.append('kelurahan_pelapor', this.dataLaporan.kelurahan_pelapor)
             formData.append('alamat_pelapor', this.dataLaporan.alamat_pelapor)
             formData.append('no_telp_pelapor', this.dataLaporan.no_telp_pelapor)
             formData.append('email_pelapor', this.dataLaporan.email_pelapor)
@@ -178,6 +227,10 @@ export default {
             formData.append('nama_terlapor', this.nama_terlapor)
             formData.append('jenis_kelamin_terlapor', this.jenis_kelamin_terlapor)
             formData.append('no_telp_terlapor', this.no_telp_terlapor)
+            formData.append('provinsi_terlapor', this.provinsi_terlapor)
+            formData.append('kota_terlapor', this.kota_terlapor)
+            formData.append('kecamatan_terlapor', this.kecamatan_terlapor)
+            formData.append('kelurahan_terlapor', this.kelurahan_terlapor)
             formData.append('alamat_terlapor', this.alamat_terlapor)
             formData.append('email_terlapor', this.email_terlapor)
             formData.append('nama_dpd_terlapor', this.nama_dpd_terlapor)
@@ -211,8 +264,34 @@ export default {
         removeDataLaporan() {
             localStorage.removeItem('dataLaporan1')
         },
+        async dataProvinsi() {
+            axios
+            .get("http://localhost/api/provinsi")
+            .then(res => (this.provinsi = res.data.data))
+            .catch(err => console.log(err));
+        },
+        async dataKabkota(event) {
+            axios
+            .get("http://localhost/api/kabkota?province_id="+event.target.value)
+            .then(res => (this.kabkota = res.data.data))
+            .catch(err => console.log(err));
+        },
+        async dataKecamatan(event) {
+            axios
+            .get("http://localhost/api/kecamatan?regency_id="+event.target.value)
+            .then(res => (this.kecamatan = res.data.data))
+            .catch(err => console.log(err));
+        },
+        async dataKelurahan(event) {
+            axios
+            .get("http://localhost/api/kelurahan?district_id="+event.target.value)
+            .then(res => (this.kelurahan = res.data.data))
+            .catch(err => console.log(err));
+        }
     },
     async mounted() {
+        this.dataProvinsi();
+
         var dataStorage = await localStorage.getItem('dataLaporan1')
         this.dataLaporan = await JSON.parse(dataStorage)
 

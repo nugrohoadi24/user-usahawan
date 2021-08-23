@@ -14,7 +14,7 @@
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                         <h3 class="laporan-heading">Form Permohonan Termohon</h3>
-                        <form class="was-validated needs-validation row laporan-form" v-on:submit.prevent="saveDataTermohon">
+                        <form class="was-validated needs-validation row laporan-form" v-on:submit.prevent="submitData">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <input type="text" name="nama_termohon" id="nama_termohon" v-model="nama_termohon" class="form-control m-2" placeholder="Nama Termohon *" required/>
@@ -29,19 +29,63 @@
                                 <div class="form-group">
                                     <input type="number" name="no_telp_termohon" id="no_telp_termohon" v-model="no_telp_termohon" minlength="10" maxlength="13" class="form-control m-2" placeholder="Nomor Telepon Termohon *" required/>
                                 </div>
-                                <div class="form-group">
-                                    <input type="text" name="provinsi_termohon" id="provinsi_termohon" v-model="provinsi_termohon" class="form-control m-2" placeholder="Provinsi Termohon *" required/>
-                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input type="text" name="kota_termohon" id="kota_termohon" v-model="kota_termohon" class="form-control m-2" placeholder="Kabupaten/Kota Termohon *" required/>
+                                    <select @change="dataKabkota" name="provinsi_termohon" id="provinsi_termohon" v-model="provinsi_termohon" class="form-control m-2" required>
+                                        <option 
+                                            class="hidden" 
+                                            value="" 
+                                            selected disabled>Provinsi Termohon *</option>
+                                        <option
+                                            v-for="getProvinsi in provinsi"
+                                            v-bind:key="getProvinsi.id"
+                                            v-bind:value="getProvinsi.id">
+                                            {{ getProvinsi.name }}
+                                        </option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" name="kecamatan_termohon" id="kecamatan_termohon" v-model="kecamatan_termohon" class="form-control m-2" placeholder="Kecamatan Termohon *" />
+                                    <select @change="dataKecamatan" name="kota_termohon" id="kota_termohon" v-model="kota_termohon" class="form-control m-2" required>
+                                        <option 
+                                            class="hidden" 
+                                            value="" 
+                                            selected disabled>Kabupaten/Kota Termohon *</option>
+                                        <option
+                                            v-for="getKabkota in kabkota"
+                                            v-bind:key="getKabkota.id"
+                                            v-bind:value="getKabkota.id">
+                                            {{ getKabkota.name }}
+                                        </option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" name="kelurahan_termohon" id="kelurahan_termohon" v-model="kelurahan_termohon" class="form-control m-2" placeholder="Kelurahan Termohon *" />
+                                    <select @change="dataKelurahan" name="kecamatan_termohon" id="kecamatan_termohon" v-model="kecamatan_termohon" class="form-control m-2">
+                                        <option 
+                                            class="hidden" 
+                                            value="" 
+                                            selected disabled>Kecamatan Termohon *</option>
+                                        <option
+                                            v-for="getKecamatan in kecamatan"
+                                            v-bind:key="getKecamatan.id"
+                                            v-bind:value="getKecamatan.id">
+                                            {{ getKecamatan.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select name="kelurahan_termohon" id="kelurahan_termohon" v-model="kelurahan_termohon" class="form-control m-2">
+                                        <option 
+                                            class="hidden" 
+                                            value="" 
+                                            selected disabled>Kelurahan Termohon *</option>
+                                        <option
+                                            v-for="getKelurahan in kelurahan"
+                                            v-bind:key="getKelurahan.id"
+                                            v-bind:value="getKelurahan.id">
+                                            {{ getKelurahan.name }}
+                                        </option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <textarea class="form-control is-invalid m-2" name="alamat_termohon" id="alamat_termohon" v-model="alamat_termohon" placeholder="Alamat Lengkap Pemohon *" required></textarea>
@@ -92,6 +136,11 @@ export default {
             alamat_termohon: '',
             foto_pemohon: null,
             ktp_pemohon: null,
+
+            provinsi: [],
+            kabkota: [],
+            kecamatan: [],
+            kelurahan: [],
         }
     },
     methods: {
@@ -101,29 +150,15 @@ export default {
         handleFotoKTP(e) {
             this.ktp_pemohon = e.target.files[0]
         },
-        saveDataTermohon() {
-            var termohonStorage = {
-                "nama_termohon": this.nama_termohon,
-                "jenis_kelamin_termohon": this.jenis_kelamin_termohon,
-                "no_telp_termohon": this.no_telp_termohon,
-                "alamat_termohon": this.alamat_termohon,
-                "provinsi_termohon": this.provinsi_termohon,
-                "kota_termohon": this.kota_termohon,
-                "kecamatan_termohon": this.kecamatan_termohon,
-                "kelurahan_termohon": this.kelurahan_termohon,
-                "kategori": "Laporan",
-                "status": "PROSES",
-            }
-
-            const parsed = JSON.stringify(termohonStorage);
-            localStorage.setItem('dataPermohonan2', parsed);
-            this.submitData()
-        },
         submitData() {
             let formData = new FormData()
             formData.append('nama_pemohon', this.dataPermohonan.nama_pemohon)
             formData.append('jenis_kelamin_pemohon', this.dataPermohonan.jenis_kelamin_pemohon)
             formData.append('tanggal_lahir_pemohon', this.dataPermohonan.tanggal_lahir_pemohon)
+            formData.append('provinsi_pemohon', this.dataPermohonan.provinsi_pemohon)
+            formData.append('kota_pemohon', this.dataPermohonan.kota_pemohon)
+            formData.append('kecamatan_pemohon', this.dataPermohonan.kecamatan_pemohon)
+            formData.append('kelurahan_pemohon', this.dataPermohonan.kelurahan_pemohon)
             formData.append('alamat_pemohon', this.dataPermohonan.alamat_pemohon)
             formData.append('no_telp_pemohon', this.dataPermohonan.no_telp_pemohon)
             formData.append('email_pemohon', this.dataPermohonan.email_pemohon)
@@ -144,7 +179,8 @@ export default {
             
             formData.append('foto_pemohon', this.foto_pemohon)
             formData.append('ktp_pemohon', this.ktp_pemohon)
-
+            
+            var that = this;
             axios({
             method: "post",
             url: "http://localhost/api/permohonan",
@@ -153,22 +189,52 @@ export default {
             })
             .then(function (response) {
                 alert(response.data.message)
+                that.$router.push('/sukses');
             })
             .catch(function (e) {
                 console.log(e);
                 alert('Data Gagal Dikirim, silahkan periksa inputan anda')
                 
             });
+            this.removeDataPermohonan()
         },
+        removeDataPermohonan() {
+            localStorage.removeItem('dataPermohonan1')
+        },
+        async dataProvinsi() {  
+            axios
+            .get("http://localhost/api/provinsi")
+            .then(res => (this.provinsi = res.data.data))
+            .catch(err => console.log(err));
+        },
+        async dataKabkota(event) {
+            axios
+            .get("http://localhost/api/kabkota?province_id="+event.target.value)
+            .then(res => (this.kabkota = res.data.data))
+            .catch(err => console.log(err));
+        },
+        async dataKecamatan(event) {
+            axios
+            .get("http://localhost/api/kecamatan?regency_id="+event.target.value)
+            .then(res => (this.kecamatan = res.data.data))
+            .catch(err => console.log(err));
+        },
+        async dataKelurahan(event) {
+            axios
+            .get("http://localhost/api/kelurahan?district_id="+event.target.value)
+            .then(res => (this.kelurahan = res.data.data))
+            .catch(err => console.log(err));
+        }
     },
     async mounted() {
+        this.dataProvinsi();
+
         var dataStorage = await localStorage.getItem('dataPermohonan1')
         this.dataPermohonan = await JSON.parse(dataStorage)
         
         if (localStorage.getItem('dataPermohonan2')) {
             try {
                 this.dataPermohonan2 = JSON.parse(localStorage.getItem('dataPermohonan2'));
-                console.log(this.dataPermohonan2, 'Aaa')
             } catch(e) {
                 localStorage.removeItem('dataPermohonan2')
             }
